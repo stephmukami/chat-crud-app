@@ -1,47 +1,79 @@
-import React, { useCallback, useContext } from "react";
-import { useNavigate } from "react-router-dom"; 
+import React, { useCallback, useContext, useState } from "react";
+import { useNavigate,Link } from 'react-router-dom';
+
 import {app,auth} from '../authentication/firebase'; //maybe shd be auth
-import { AuthContext } from "../authentication/Auth.jsx";
-
+import { signInWithEmailAndPassword } from "firebase/auth";
 export default function Login () {
-  const navigate = useNavigate(); // Use useNavigate hook instead of withRouter
+  const navigate = useNavigate(); // Hook for navigation
+  //state
+  const [login,setLogin] = useState(
+    { 
+   email: '',
+     password: ''
+   }
+   )
+   const [error,setError] = useState(false)
 
-  const handleLogin = useCallback(
-    async (event) => {
-      event.preventDefault();
-      const { email, password } = event.target.elements;
-      try {
-        await auth.auth().signInWithEmailAndPassword(email.value, password.value);
-        navigate("/"); // Use navigate function instead of history.push
-      } catch (error) {
-        alert(error);
-      }
-    },
-    [navigate]
-  );
- 
-  const { currentUser } = useContext(AuthContext);
-  if (currentUser) {
-    navigate("/"); // Use navigate function instead of Redirect
-    return null; // Return null when redirecting to prevent rendering of the login form
+   //handling state
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLogin((prevLogin) => ({
+      ...prevLogin,
+      [name]: value
+    }));
+  };
+
+  function signIn(e){
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, login.email, login.password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        navigate('/feed')
+      })
+      .catch((error) => {
+        console.error("Error logging in:", error);
+        setError(true)
+      });
   }
-  
 
-  return (
+  const noError = (
+    <form onSubmit={signIn} >
+
+    <input
+        type="email"
+        name= 'email'
+        placeholder="Enter your email"
+        value={login.email}
+        onChange={(e)=> handleChange(e)} //try without passing e
+      ></input>
+    <input
+          type="text"
+          name= 'password'
+          placeholder="Enter your password"
+          value={login.password}
+          onChange={(e)=> handleChange(e)}
+        ></input>
+        <button type='submit'>Submit</button>
+    </form>
+  )
+  const errorContent = (
     <div>
-      <h1>Log in</h1>
-      <form onSubmit={handleLogin}>
-        <label>
-          Email
-          <input name="email" type="email" placeholder="Email" />
-        </label>
-        <label>
-          Password
-          <input name="password" type="password" placeholder="Password" />
-        </label>
-        <button type="submit">Log in</button>
-      </form>
+  <h3>Create an account</h3>
+    <Link to ='/signup'>create an account now</Link>
     </div>
-  );
+  
+  )
+  
+  return(
+    <>
+    <h1>Login</h1>
+    <div>
+    {
+      error ? errorContent : noError
+    }
+    </div>
+    </>
+  )
 };
 
+// some users -> robym4378@bestspeakingcourses.com pass: qwertyu

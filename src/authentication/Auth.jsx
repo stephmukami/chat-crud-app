@@ -1,30 +1,46 @@
 import React, { useEffect, useState } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import {app,auth} from './firebase';
+import Feed from "../components/Feed";
+import Home from "../components/Home";
 
-export const AuthContext = React.createContext();
+export default function Auth(){
 
-export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [pending, setPending] = useState(true);
+  //state
+  const [authUser,setAuthUser] = useState(null);
 
+  
   useEffect(() => {
-    auth.auth().onAuthStateChanged((user) => { //could need to be auth
-      setCurrentUser(user)
-      setPending(false)
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(user);
+      } else {
+        setAuthUser(null);
+      }
     });
-  }, []);
 
-  if(pending){
-    return <>Loading...</>
-  }
+    return () => {
+      listen();
+    };
+  }, [])
 
-  return (
-    <AuthContext.Provider
-      value={{
-        currentUser
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-};
+
+  return(
+    <>
+    
+    <div>
+    {authUser ? (
+        <>
+          {/* put in feed page
+          <p>{`Signed In as ${authUser.email}`}</p>
+           */}
+           <Feed/>
+        </>
+      ) : (
+        //put sth more elaborate
+        <Home/>
+      )}
+    </div>
+    </>
+  )
+}

@@ -4,7 +4,6 @@ export default function Navbar(){
     return(
         <>
         <div className='navbar'>
-        <h1>sign up</h1>
         <ul>
             <div>
               <li>
