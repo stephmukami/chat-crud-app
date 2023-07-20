@@ -3,8 +3,10 @@ import { useNavigate,Link } from 'react-router-dom';
 
 import {app,auth} from '../authentication/firebase'; //maybe shd be auth
 import { signInWithEmailAndPassword } from "firebase/auth";
-export default function Login () {
+export default function Login ({handleView}) {
+
   const navigate = useNavigate(); // Hook for navigation
+
   //state
   const [login,setLogin] = useState(
     { 
@@ -23,12 +25,15 @@ export default function Login () {
     }));
   };
 
+  
+
   function signIn(e){
     e.preventDefault();
     signInWithEmailAndPassword(auth, login.email, login.password)
       .then((userCredential) => {
         console.log(userCredential);
         navigate('/feed')
+        handleView(true)
       })
       .catch((error) => {
         console.error("Error logging in:", error);
@@ -47,7 +52,7 @@ export default function Login () {
         onChange={(e)=> handleChange(e)} //try without passing e
       ></input>
     <input
-          type="text"
+          type="password"
           name= 'password'
           placeholder="Enter your password"
           value={login.password}

@@ -13,7 +13,8 @@ import { getFirestore, doc, updateDoc, arrayUnion ,setDoc} from 'firebase/firest
     firstname : '',
     lastname : '',
     email: '',
-    password: ''
+    password: '',
+    bio:''
   }
   )
   const [successful,setSuccessful] = useState(false)
@@ -38,7 +39,7 @@ import { getFirestore, doc, updateDoc, arrayUnion ,setDoc} from 'firebase/firest
     const userId = user.uid;
 
      // Add user data to Firestore
-     addUserToFirestore(userId, userDetails.firstname, userDetails.lastname);
+     addUserToFirestore(userId, userDetails.firstname, userDetails.lastname,userDetails.email,userDetails.password,userDetails.bio);
      //navigating to feed page
      setSuccessful(true)
     })
@@ -46,20 +47,26 @@ import { getFirestore, doc, updateDoc, arrayUnion ,setDoc} from 'firebase/firest
       console.error("Error signing up:", error);
     });
   }
+
   //adding user to firestore collection
-  async function addUserToFirestore(userId, firstName, lastName) {
+  async function addUserToFirestore(userId, firstName, lastName,email,password,bio) {
     const usersCollectionRef = doc(db, "users", userId);
   
     // Create a new user document with first name and last name fields
     await setDoc(usersCollectionRef, {
       firstName: firstName,
       lastName: lastName,
+      email:email,
+      password:password,
+      bio: bio,
+      crumbs:[],
+      following:[]
       // Add any other additional user data if needed
     });
   }
 
 //adding tweets to firestore(might work better when sb is adding tweets which will be in feed page)
-// Function to add a tweet to the user's document in Firestore
+//Function to add a tweet to the user's document in Firestore
 // async function addTweetToFirestore(userId, tweetText) {
 //   const db = getFirestore();
 //   const usersCollectionRef = doc(db, "users", userId);
@@ -103,6 +110,14 @@ import { getFirestore, doc, updateDoc, arrayUnion ,setDoc} from 'firebase/firest
             name= 'password'
             placeholder="Enter your password"
             value={userDetails.password}
+            onChange={(e)=> handleChange(e)}
+          ></input>
+          
+          <input
+            type="text"
+            name= 'bio'
+            placeholder="short bio"
+            value={userDetails.bio}
             onChange={(e)=> handleChange(e)}
           ></input>
           <button type='submit'>Sign Up</button>

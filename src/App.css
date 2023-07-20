@@ -1,0 +1,18 @@
+*{
+    box-sizing: border-box;
+    margin: 0px;
+}
+.navbar{
+    background-color: pink;
+}
+.feed-container{
+    border: 1px solid slateblue;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+.user-input{
+    border: 1px solid green;
+}
+.timeline{
+    border: 1px solid orange;
+}

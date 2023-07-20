@@ -1,49 +1,40 @@
-import React from  'react'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from 'react';
-
-import Navbar from './components/Navbar'
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Signup from './components/Signup';
-import Login from './components/Login'
-import Feed from './components/Feed'
+import Login from './components/Login';
+import Feed from './components/Feed';
 import Auth from './authentication/Auth';
+import NotFound404 from './components/NotFound404';
 
+export default function Router() {
+  const [viewLogin, setViewLogin] = useState(true);
 
-export default function Router(){
- 
-    //STATES
- //changing login to be logout or vice versa
-    const[viewLogin,setViewLogin] = useState(true)
+  function handleView(param) {
+    setViewLogin(param);
+  }
 
-    function handleView(){
-        setViewLogin(false)
-    }
-
-    //dispalying login form or  create account message
-return(
+  return (
     <>
-    <BrowserRouter>
-         <Navbar
-         handleView = {handleView}
-         viewLogin = {viewLogin}
-         />
-
-      <Routes>
-
+      <BrowserRouter>
+        <Navbar handleView={handleView} viewLogin={viewLogin} />
+        <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login/>} 
-            handleView = {handleView}
-            viewLogin = {viewLogin}
+          <Route path="/login" element={<Login
+          handleView={handleView}
+          />} />
+          <Route
+            path="/feed"
+            element={<Feed />}
           />
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/auth" element={<Auth />} />
-
-
-      </Routes>
+          <Route
+            path="/auth"
+            element={<Auth handleView={handleView} />} // Pass only the handleView function, not the viewLogin state
+          />
+        </Routes>
       </BrowserRouter>
     </>
-)
-
+  );
 }
