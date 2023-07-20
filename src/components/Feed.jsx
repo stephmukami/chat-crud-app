@@ -1,8 +1,9 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import ToFollow from './ToFollow';
 import {signOut } from "firebase/auth";
 import {app,auth,db} from '../authentication/firebase'; //maybe shd be auth
-import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, arrayUnion, collection, getDocs } from 'firebase/firestore';
 
 export default function Feed(){
 //state
@@ -25,12 +26,12 @@ export default function Feed(){
         addCrumbToFirestore(crumb.userCrumb)
         setCrumb((prevCrumb)=>({
           ...prevCrumb,
-          userCrumb : ''
-        })); // Reset the input field state
+          userCrumb : '' // Reset the input field state
+        })); 
       }
 
+  
       //adding the input to firestore
-
 async function addCrumbToFirestore(crumbText) {
   const db = getFirestore();
   const usersCollectionRef = doc(db, "users", auth.currentUser.uid); // Use the correct user ID here
@@ -41,10 +42,32 @@ async function addCrumbToFirestore(crumbText) {
   });
   console.log('crumb eaten')
 }
-// The arrayUnion operation is used to add elements 
-//to an array field in a document if they do not already exist
+// The arrayUnion operation is used to add elements to an array field in a document if they do not already exist
 
-//retrieve users to follow
+//RETRIEVE USERS TO FOLLOW
+ // State to store the retrieved users
+ const [people, setPeople] = useState([]);
+
+  // Retrieve users to follow from Firestore on component mount
+  useEffect(() => {
+    const colRef = collection(db, 'users');
+
+    getDocs(colRef)
+      .then((snapshot) => {
+        const fetchedPeople = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id
+        }));
+        setPeople(fetchedPeople); // Update the people state with the fetched data
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
+
+  console.log(people);
+
+ 
 
     return(
         <>
@@ -69,8 +92,17 @@ async function addCrumbToFirestore(crumbText) {
           </div>
           <div className='col-two'>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
-               consectetur molestiae dolor ipsam voluptas enim eius nihil dicta, porro blanditiis repudiandae illo provident optio sint consequuntur, numquam laborum quia? Aliquid tempora natus, ducimus illum voluptatem quasi dignissimos, quia ad similique vitae illo excepturi labore magnam vel, molestiae et expedita nostrum adipisci commodi repellat ipsam maxime! Eligendi.
+              {
+                  people.map((item)=>{ //or remove curly braces and return
+                    return(
+                      <ToFollow
+                      name = {item.firstName}
+                      bio = {item.bio}
+                      id = {item.id}
+                      />
+                    )
+                  })
+              }
             </p>
           </div>
             
