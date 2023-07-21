@@ -3,7 +3,7 @@ import { useState,useEffect } from 'react';
 import ToFollow from './ToFollow';
 import {signOut } from "firebase/auth";
 import {app,auth,db} from '../authentication/firebase'; //maybe shd be auth
-import { getFirestore, doc, updateDoc, arrayUnion, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, arrayUnion, collection, getDocs,getDoc } from 'firebase/firestore';
 
 export default function Feed(){
 //state
@@ -11,6 +11,7 @@ export default function Feed(){
     userCrumb : ''
     } )
     const [nameDisplay, setnameDisplay] = useState(null); 
+    const [timeLine,setTimeLine] = useState([])
 
     //handling state
     const handleChange = (e) => {
@@ -81,7 +82,41 @@ async function addCrumbToFirestore(crumbText) {
 
   console.log(people);
 
- //<h3>{`Hello ${authUser.firstName}`}</h3>
+  // SETTING TIMELINE
+ //retrieving crumbs of users in the array called following
+ function getCrumbs(){
+  const signedInUserId = auth.currentUser.uid;
+  const userRef = doc(db, "users", signedInUserId); // Reference to the signed-in user's document
+
+  // get collection data
+  getDoc(userRef)
+  .then((snapshot) => {
+    if (snapshot.exists()) {
+      const userData = snapshot.data();
+      const followingArray = userData.following || [];
+
+      // Extract the crumbs array from each user object and push them into the books array
+      let books = [];
+      followingArray.forEach((user) => {
+        setTimeLine((prevArray)=>[...prevArray,...user.crumbs])
+        books.push(...user.crumbs);
+      });
+
+      console.log("the users are");
+      console.log(books);
+      console.log('the state is')
+      console.log(timeLine)
+
+    }
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+}
+
+useEffect(() => {
+  getCrumbs();
+}, []);
 
     return(
         <>
@@ -101,11 +136,20 @@ async function addCrumbToFirestore(crumbText) {
                 </form>
             </div>
             <div className='timeline'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam suscipit, 
-                dolorum animi dignissimos distinctio vel repellat minima beatae quas dolorem eos laboriosam ducimus quo tempora enim, quasi similique ipsa quidem fugit minus incidunt. Tempore quisquam quaerat inventore autem suscipit! Assumenda iste quidem vitae quod alias accusamus velit magnam! Voluptas, odit.
+              <p>TIMELINE</p>
+             {timeLine.length > 0 ? (
+                  timeLine.map((item) => (
+                    <div className='tl-object'>
+                      <p>{item.crumbs}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>No crumbs to display.</p>
+                )}
             </div>
           </div>
           <div className='col-two'>
+            <div className='people-section'>
             <p>
               {
                   people.map((item)=>{ //or remove curly braces and return
@@ -119,6 +163,11 @@ async function addCrumbToFirestore(crumbText) {
                   })
               }
             </p>
+            </div>
+            <div className='personal-tweets'>
+
+            </div>
+
           </div>
             
         </div>
