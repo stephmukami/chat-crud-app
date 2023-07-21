@@ -11,7 +11,7 @@ export default function Feed(){
     userCrumb : ''
     } )
     const [nameDisplay, setnameDisplay] = useState(null); 
-    const [timeLine,setTimeLine] = useState([])
+   
 
     //handling state
     const handleChange = (e) => {
@@ -83,41 +83,10 @@ async function addCrumbToFirestore(crumbText) {
   console.log(people);
 
   // SETTING TIMELINE
- //retrieving crumbs of users in the array called following
- function getCrumbs(){
-  const signedInUserId = auth.currentUser.uid;
-  const userRef = doc(db, "users", signedInUserId); // Reference to the signed-in user's document
 
-  // get collection data
-  getDoc(userRef)
-  .then((snapshot) => {
-    if (snapshot.exists()) {
-      const userData = snapshot.data();
-      const followingArray = userData.following || [];
 
-      // Extract the crumbs array from each user object and push them into the books array
-      let books = [];
-      followingArray.forEach((user) => {
-        setTimeLine((prevArray)=>[...prevArray,...user.crumbs])
-        books.push(...user.crumbs);
-      });
-
-      console.log("the users are");
-      console.log(books);
-      console.log('the state is')
-      console.log(timeLine)
-
-    }
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
-}
-
-useEffect(() => {
-  getCrumbs();
-}, []);
-
+    
+    
     return(
         <>
         <h1>Feed page</h1>
@@ -135,17 +104,10 @@ useEffect(() => {
                     <button type='submit'>Send</button>
                 </form>
             </div>
+
             <div className='timeline'>
               <p>TIMELINE</p>
-             {timeLine.length > 0 ? (
-                  timeLine.map((item) => (
-                    <div className='tl-object'>
-                      <p>{item.crumbs}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p>No crumbs to display.</p>
-                )}
+          
             </div>
           </div>
           <div className='col-two'>

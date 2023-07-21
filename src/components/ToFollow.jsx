@@ -1,13 +1,14 @@
 import React from "react";
-import { useState } from 'react'
-import { auth } from '../authentication/firebase';
-import { getFirestore, doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { useState ,useEffect} from 'react'
+import { auth,db } from '../authentication/firebase';
+import { getFirestore, doc, getDoc,updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 
 export default function ToFollow({ item }) {
   //state
   const [following, setFollowing] = useState(false);
-
+  const [timeLine,setTimeLine] = useState([])
   //functions to handle state
+
   //function to follow a person
   async function followUser({ firstName, id, crumbs }) {
     try {
@@ -42,6 +43,45 @@ export default function ToFollow({ item }) {
       console.error(error.message);
     }
   }
+
+  //SETTING TIMELINE
+  //retrieving crumbs of users in the array called following
+  function getCrumbs(){
+    const signedInUserId = auth.currentUser.uid;
+    const userRef = doc(db, "users", signedInUserId); // Reference to the signed-in user's document
+  
+    // get collection data
+    getDoc(userRef)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const userData = snapshot.data();
+        const followingArray = userData.following || [];
+  
+        // Extract the crumbs array from each user object and push them into the books array
+        let followingCrumbs = [];
+        followingArray.forEach((user) => {
+         
+          followingCrumbs.push(...user.crumbs);
+        });
+
+        setTimeLine(followingCrumbs)
+  
+        console.log("the users are");
+        console.log(followingCrumbs);
+        console.log('the state is')
+        console.log(timeLine)
+  
+      }
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  }
+  
+  useEffect(() => {
+    getCrumbs();
+  }, [following]);
+
 
   //buttons to be displayed
   const isFollowing = (
