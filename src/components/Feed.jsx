@@ -10,6 +10,7 @@ export default function Feed(){
    const [crumb,setCrumb] = useState( {
     userCrumb : ''
     } )
+    const [nameDisplay, setnameDisplay] = useState(null); 
 
     //handling state
     const handleChange = (e) => {
@@ -31,7 +32,7 @@ export default function Feed(){
       }
 
   
-      //adding the input to firestore
+//adding the input to firestore
 async function addCrumbToFirestore(crumbText) {
   const db = getFirestore();
   const usersCollectionRef = doc(db, "users", auth.currentUser.uid); // Use the correct user ID here
@@ -58,7 +59,20 @@ async function addCrumbToFirestore(crumbText) {
           ...doc.data(),
           id: doc.id
         }));
-        setPeople(fetchedPeople); // Update the people state with the fetched data
+
+        // Filter out the signed-in user from the fetched users
+      const signedInUserId = auth.currentUser.uid;
+      const filteredPeople = fetchedPeople.filter(
+        (person) => person.id !== signedInUserId
+      );
+
+      setPeople(filteredPeople); // Update the people state with the fetched data excluding the signed-in user
+         
+          // Find the signed-in user's data and update the authUser state
+          const signedInUser = fetchedPeople.find((person) => person.id === signedInUserId);
+          if (signedInUser) {
+            setnameDisplay(signedInUser);
+          }
       })
       .catch((err) => {
         console.log(err.message);
@@ -67,11 +81,12 @@ async function addCrumbToFirestore(crumbText) {
 
   console.log(people);
 
- 
+ //<h3>{`Hello ${authUser.firstName}`}</h3>
 
     return(
         <>
         <h1>Feed page</h1>
+        {nameDisplay && <h3>{`Hello ${nameDisplay.firstName}`}</h3>}
         <div className='feed-container'>
           <div className='col-one'>
           <div className='user-input'>
@@ -96,9 +111,9 @@ async function addCrumbToFirestore(crumbText) {
                   people.map((item)=>{ //or remove curly braces and return
                     return(
                       <ToFollow
-                      name = {item.firstName}
-                      bio = {item.bio}
-                      id = {item.id}
+                item={item}
+                key = {item.id}
+                      
                       />
                     )
                   })
