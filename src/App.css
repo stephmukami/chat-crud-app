@@ -7,15 +7,7 @@
 }
 .feed-container{
     border: 1px solid slateblue;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
 }
 .user-input{
     border: 1px solid green;
-}
-.timeline{
-    border: 1px solid orange;
-}
-.person{
-    border:1px solid red;
 }
