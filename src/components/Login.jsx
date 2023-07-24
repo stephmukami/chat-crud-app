@@ -43,40 +43,49 @@ export default function Login ({handleView}) {
 
   const noError = (
     <form onSubmit={signIn} >
+      <div className="input-wrapper">
+          <input
+            type="email"
+            name= 'email'
+            placeholder="Enter your email"
+            value={login.email}
+            onChange={(e)=> handleChange(e)} //try without passing e
+          ></input>
+      </div>
 
-    <input
-        type="email"
-        name= 'email'
-        placeholder="Enter your email"
-        value={login.email}
-        onChange={(e)=> handleChange(e)} //try without passing e
-      ></input>
-    <input
-          type="password"
-          name= 'password'
-          placeholder="Enter your password"
-          value={login.password}
-          onChange={(e)=> handleChange(e)}
-        ></input>
+        <div className="input-wrapper">
+            <input
+              type="password"
+              name= 'password'
+              placeholder="Enter your password"
+              value={login.password}
+              onChange={(e)=> handleChange(e)}
+            ></input>
+          </div>
+
+ 
         <button type='submit'>Submit</button>
     </form>
   )
   const errorContent = (
     <div>
-  <h3>Create an account</h3>
-    <Link to ='/signup'>create an account now</Link>
+  <h3>You dont have an account 😥</h3>
+    <Link to ='/signup'>create one now</Link>
     </div>
   
   )
   
   return(
     <>
-    <h1>Login</h1>
-    <div>
-    {
-      error ? errorContent : noError
-    }
+    <div className="log-container">
+          <h1 className="message">Or Log Back In</h1>
+          <div className="log-form">
+          {
+            error ? errorContent : noError
+          }
+          </div>
     </div>
+    
     </>
   )
 };

@@ -45,6 +45,7 @@ import { getFirestore, doc, updateDoc, arrayUnion ,setDoc} from 'firebase/firest
     })
     .catch((error) => {
       console.error("Error signing up:", error);
+      alert(error)
     });
   }
 
@@ -79,55 +80,72 @@ import { getFirestore, doc, updateDoc, arrayUnion ,setDoc} from 'firebase/firest
 
   //displaying different messages
   const beforeSignUp = ( //maybe add a div
-<form onSubmit={signUser}>
-      <h1>Create account</h1>
-        <input
-            type="text"
-            name= 'firstname'
-            placeholder="Enter your firstname"
-            value={userDetails.firstname}
-            onChange={(e)=> handleChange(e)}
-          ></input>
+  <div className="form-div">
+<form className="sign-up-form" onSubmit={signUser}>
+        
+            <h1>Create account</h1>
+       
+        <div className="wrapper">
+                  <label htmlFor="">First Name</label>
+                  <input
+                type="text"
+                name= 'firstname'
+                value={userDetails.firstname}
+                onChange={(e)=> handleChange(e)}
+              ></input>
+        </div>
+    
+        <div  className="wrapper">
+                <label htmlFor="">Last Name</label>
+                <input
+                type="text"
+                name= 'lastname'
+                value={userDetails.lastname}
+                onChange={(e)=> handleChange(e)}
+              ></input>
+          </div>
+   
+          <div  className="wrapper">
+                <label htmlFor="">Email</label>
+                <input
+                type="email"
+                name= 'email'
+                value={userDetails.email}
+                onChange={(e)=> handleChange(e)} //try without passing e
+              ></input>
+          </div>
+       
+             <div  className="wrapper">
+                <label htmlFor="">Password</label>
+                <input
+                          type="password"
+                          name= 'password'
+                          value={userDetails.password}
+                          onChange={(e)=> handleChange(e)}
+                        ></input>
+              </div>
+      
 
-        <input
-            type="text"
-            name= 'lastname'
-            placeholder="Enter your lastname"
-            value={userDetails.lastname}
-            onChange={(e)=> handleChange(e)}
-          ></input>
-
-           <input
-          type="email"
-          name= 'email'
-          placeholder="Enter your email"
-          value={userDetails.email}
-          onChange={(e)=> handleChange(e)} //try without passing e
-        ></input>
-
-        <input
-            type="password"
-            name= 'password'
-            placeholder="Enter your password"
-            value={userDetails.password}
-            onChange={(e)=> handleChange(e)}
-          ></input>
-          
-          <input
+          <div  className="wrapper">
+  <label htmlFor="">Bio</label>
+  <input
             type="text"
             name= 'bio'
-            placeholder="short bio"
+            placeholder="a little about yourself"
             value={userDetails.bio}
             onChange={(e)=> handleChange(e)}
           ></input>
+</div>
+     
           <button type='submit'>Sign Up</button>
     </form>
+    </div>
   )
   const afterSignUp = (
-    <div>
-      <h1>All ready to use Courier !</h1>
+    <div className="after-signup">
+      <h1>All ready to use Chatter! 🤩</h1>
       <h2>
-      <Link to ='/auth'>Start ASAP</Link>
+      <Link to ='/auth'>Start ASAP 📝</Link>
       </h2>
     </div>
     

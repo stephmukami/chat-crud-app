@@ -195,6 +195,27 @@ useEffect(() => {
 
   return (
     <>
+    <div className="content-container">
+      <div className="col-one">
+      <p>Timeline is </p>
+            { timeLine.map((datum)=>{
+              return(
+                <div key={datum.id}>
+                    
+                    {
+                      datum.crumbs.map((crumb,index)=>(
+                          <div key={index}>
+                            <h6>{datum.firstName}</h6>
+                              <p>{crumb}</p>
+                          </div>
+                      ))
+                    }
+                </div>
+              )
+            })
+
+            }
+      </div>
    <h3 >People</h3>
      {people.map((item) => (
   <div className="other-users" key={item.id}>
@@ -210,26 +231,9 @@ useEffect(() => {
   </div>
 ))}
 
-        <p>Timeline is </p>
-        { timeLine.map((datum)=>{
-          return(
-            <div key={datum.id}>
-                
-                {
-                  datum.crumbs.map((crumb,index)=>(
-                      <div key={index}>
-                        <h6>{datum.firstName}</h6>
-                          <p>{crumb}</p>
-                      </div>
-                  ))
-                }
-            </div>
-          )
-        })
-
-        }
+        
         <div className="user-own-tweets">
-          <h3>Own tweets</h3>
+          <h3>Own Chats</h3>
             {
               ownCrumbs.map((item)=>{
                 return(
@@ -240,8 +244,9 @@ useEffect(() => {
               })
             }
         </div>
-
+        </div>
     </>
+    
   );
 }
 

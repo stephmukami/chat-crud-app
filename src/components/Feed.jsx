@@ -77,20 +77,25 @@ useEffect(() => {
     
     return(
         <>
-        <h1>Feed page</h1>
-        {getName && <h3>{`Hello ${getName.firstName}`}</h3>}
+      
 
         <div className='feed-container'>
-        
+             {getName && <h3 className='user-name-personal'>{`Hello ${getName.firstName}`}</h3>}
+
           <div className='user-input'>
                 <form onSubmit={handleSubmit}>
-                    <input
-                     type="text"
-                     name = 'userCrumb' //name and state should be the same
-                     value={crumb.userCrumb}
-                     onChange={(e)=> handleChange(e)}
-                      />
-                    <button type='submit'>Send</button>
+                  <div className='chat-wrapper'>
+                      <input
+                        type="text"
+                        name = 'userCrumb' //name and state should be the same
+                        value={crumb.userCrumb}
+                        onChange={(e)=> handleChange(e)}
+                        placeholder='chat away'
+                          />
+                          <button type='submit'>Send</button>
+                  </div>
+                  
+                    
                 </form>
             </div>
 

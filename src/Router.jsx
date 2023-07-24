@@ -9,7 +9,7 @@ import Auth from './authentication/Auth';
 import NotFound404 from './components/NotFound404';
 
 export default function Router() {
-  const [viewLogin, setViewLogin] = useState(true);
+  const [viewLogin, setViewLogin] = useState(false);
 
   function handleView(param) {
     setViewLogin(param);
