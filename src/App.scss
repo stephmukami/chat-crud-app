@@ -76,7 +76,7 @@ a{
     font-family: $crumbs-font;
 }
 .home-text{
-    border: 1px solid $sky-blue;
+   
     text-align: center;
     position: relative;
     top: 90px;
@@ -164,7 +164,7 @@ a{
 
 //SIGN UP
 .sign-up-page{
-    border:1px solid white;
+
     //add mixin
     @include step-background;
     height: 100vh;
@@ -173,7 +173,7 @@ a{
 .form-div{
     width:300px;
     height:400px;
-    border:1px solid pink;
+    
     background-color: $light-grey ;
     font-family: $heading-font;
     font-weight: lighter;
@@ -206,14 +206,14 @@ a{
 }
 .sign-up-form{
   .wrapper{
-    border:1px solid blue;
+    
     padding: 5px;
     margin: 10px;
     position: relative;
 
     input{
       background-color: transparent;
-      color: $white;
+      color: $sky-blue;
       outline:none;
       border: none;
       border-bottom: 1px solid $white;
@@ -322,16 +322,25 @@ a{
 //CONTENT
 .content-container{
   @include step-background;
-  height: 100vh;
+  height: 1000px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  grid-template-rows: auto 1fr;
+  
+  width:70%;
+  margin: 0 auto;
+  font-family: $crumbs-font;
 }
+
 .chat-wrapper{
-  border: 1px solid red;
-  height: 80px;
+  box-shadow: 0 15px 25px rgba(0,0,0,.4);
+  height: 100px;
   margin: 0 auto;
   background-color: $light-grey;
   width: 220px;
   padding: 15px;
   border-radius: 4px;
+  margin-bottom: 20px;
   input{
     background-color: transparent;
     outline: none;
@@ -356,17 +365,90 @@ a{
     left: 120px;
   }
 }
+.col-one{
+  border:1px solid $sky-blue;
+  border-radius: 7px 0px 0px 7px;
+}
+.col-two{
+  border:1px solid $sky-blue;
+  border-radius: 0px 7px 7px 0px;
+  //grid-template-rows: repeat(2, minmax(auto, 100px)); /* Three rows with minimum 100px height */
+  grid-row-gap:20px;
+}
+
 .user-name-personal{
   font-family: $username-font;
   color: $white;
   font-size: 32px;
-  margin-left: 20px;
+  margin-left: 60px;
 }
 
 .feed-container{
-    border: 1px solid slateblue;
+   
     @include step-background;
 }
-.user-input{
-    border: 1px solid green;
+
+.other-users{
+
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  background-color: $blue-grey;
+  border-radius: 5px;
+  color: $white;
+  height: 60px;
+  button{
+    background-color: $sky-blue;
+    color: $white;
+    border: none;
+    border-radius: 5px;
+    height: 20px;
+  }
+}
+.row-one{
+  
+  margin-bottom: 20px;
+ 
+  h3{
+    color: $white;
+    margin-left: 15px;
+    font-size: 22px;
+    padding: 5px;
+  }
+}
+.row-two{
+  
+  h3{
+    color: $white;
+    font-size: 20px;
+    margin-left: 15px;
+  }
+}
+.own-chat{
+  background-color: $light-grey;
+  border: 1px solid pink;
+  margin-bottom: 5px;
+  border: 2px;
+  border-radius: 3px;
+  padding: 5px;
+  color: $white;
+}
+.content-parent{
+  height: 100vh;
+ 
+}
+.time-div{
+  border: 1px solid grey;
+  background-color: $light-grey;
+  height: 40px;
+  color: $white;
+
+}
+.current-chatter{
+  text-align:center;
+  font-family: $username-font;
+  font-size: 22px;
+  color: $white;
 }

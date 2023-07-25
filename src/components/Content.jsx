@@ -197,14 +197,14 @@ useEffect(() => {
     <>
     <div className="content-container">
       <div className="col-one">
-      <p>Timeline is </p>
+      <p className="current-chatter">current chatter is </p>
             { timeLine.map((datum)=>{
               return(
                 <div key={datum.id}>
                     
                     {
                       datum.crumbs.map((crumb,index)=>(
-                          <div key={index}>
+                          <div className='time-div' key={index}>
                             <h6>{datum.firstName}</h6>
                               <p>{crumb}</p>
                           </div>
@@ -216,34 +216,43 @@ useEffect(() => {
 
             }
       </div>
-   <h3 >People</h3>
-     {people.map((item) => (
-  <div className="other-users" key={item.id}>
-    <div>
-      <h6>{item.firstName}</h6>
-      <h6>{item.bio}</h6>
-    </div>
-    {item.isFollowing ? (
-      <button onClick={() => unfollowUser(item)}>Unfollow</button>
-    ) : (
-      <button onClick={() => followUser(item)}>Follow</button>
-    )}
-  </div>
-))}
+      <div className="col-two">
+        <div className="row-one">
+                <h3 >People  you can follow</h3>
+            {people.map((item) => (
+          <div className="other-users" key={item.id}>
+            <div>
+              <h6>{item.firstName}</h6>
+              <h6>{item.bio}</h6>
+            </div>
+            <div>
+                {item.isFollowing ? (
+                  <button onClick={() => unfollowUser(item)}>Unfollow</button>
+                ) : (
+                  <button onClick={() => followUser(item)}>Follow</button>
+                )}
+            </div>
+           
+          </div>
+        ))}
+        </div>
+      
 
         
-        <div className="user-own-tweets">
-          <h3>Own Chats</h3>
+        <div className="row-two">
+          <h3>Your own Chats</h3>
             {
               ownCrumbs.map((item)=>{
                 return(
-                  <div > 
+                  <div className="own-chat" > 
                     <p>{item}</p>
                   </div>
                 )
               })
             }
         </div>
+      </div>
+  
         </div>
     </>
     

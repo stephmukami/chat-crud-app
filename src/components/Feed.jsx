@@ -99,10 +99,10 @@ useEffect(() => {
                 </form>
             </div>
 
-            <div className='col-two'>
-              <p>CONTENT</p>
+            
+             
                   <Content/>
-            </div>
+     
           
           
         </div>
